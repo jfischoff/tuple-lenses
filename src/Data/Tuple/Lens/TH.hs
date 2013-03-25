@@ -6,8 +6,8 @@ import Control.Lens.Tuple
 import Control.Applicative
 import Control.Monad
 
-declareLenses :: [[Int]] -> Q [Dec]
-declareLenses = mapM declareLens'
+makeManyTuples :: [[Int]] -> Q [Dec]
+makeManyTuples = mapM makeTuples'
     
 -- | Declare a top level lens. Indices start at 1.
 --   
@@ -18,17 +18,17 @@ declareLenses = mapM declareLens'
 --   Creates the splice
 --   
 --   @
---     _1_2 = lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a <&> _2 .~ b $ x) 
+--     _12 = lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a <&> _2 .~ b $ x) 
 --   @
 --
 --   See 'tl' for creating a inline lens expression
-declareLens :: [Int] -> Q [Dec]
-declareLens = fmap (:[]) . declareLens'
+makeTuples :: [Int] -> Q [Dec]
+makeTuples = fmap (:[]) . makeTuples'
 
-declareLens' :: [Int] -> Q Dec
-declareLens' indices = do
+makeTuples' :: [Int] -> Q Dec
+makeTuples' indices = do
     let body      = normalB $ mkLens indices 
-        name      = mkName $ concatMap (\x -> "_" ++ show x) indices  
+        name      = mkName $ ("_" ++) . concatMap show $ indices  
     funD name [clause [] body []]
 
 -- | Template Haskell function for combining Field lenses. Indices start at 1.
