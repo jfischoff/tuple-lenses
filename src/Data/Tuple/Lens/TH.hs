@@ -9,7 +9,19 @@ import Control.Monad
 declareLenses :: [[Int]] -> Q [Dec]
 declareLenses = mapM declareLens'
     
---_1_2 = lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a <&> _2 .~ b $ x) 
+-- | Declare a top level lens. Indices start at 1.
+--   
+--   @
+--     declareLens [1,2]
+--   @
+--   
+--   Creates the splice
+--   
+--   @
+--     _1_2 = lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a <&> _2 .~ b $ x) 
+--   @
+--
+--   See 'tl' for creating a inline lens expression
 declareLens :: [Int] -> Q [Dec]
 declareLens = fmap (:[]) . declareLens'
 
@@ -18,7 +30,26 @@ declareLens' indices = do
     let body      = normalB $ mkLens indices 
         name      = mkName $ concatMap (\x -> "_" ++ show x) indices  
     funD name [clause [] body []]
-    
+
+-- | Template Haskell function for combining Field lenses. Indices start at 1.
+--   Calling:
+--   
+--   @
+--     tl [1,2]
+--   @ 
+--   
+--   Makes a lens like:
+--
+--   @
+--     lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a <&> _2 .~ b $ x) 
+--   @
+--   
+--   Here is a more complicated example
+--  
+--   >>> ('a','b','c','d') ^. $(tl [4,1,2,3])
+--   ('d','a','b','c')   
+--
+--   See 'declareLens' for creating a top level lens. 
 tl :: [Int] -> Q Exp
 tl = mkLens
 
