@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                tuple-lenses
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Stock FieldN combos and generators
 description:         
  This package provides some stock lenses for manipulating multiple elements
@@ -19,7 +19,7 @@ description:
  >> ('a','b','c','d') ^. $(tl [4,1,2,3])
  > ('d','a','b','c')
 
-homepage:            http://github.com/jfischoff/disjoint-lenses
+homepage:            http://github.com/jfischoff/tuple-lenses
 license:             BSD3
 license-file:        LICENSE
 author:              Jonathan Fischoff
