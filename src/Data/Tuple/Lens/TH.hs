@@ -18,7 +18,7 @@ makeManyTuples = mapM makeTuples'
 --   Creates the splice
 --   
 --   @
---     _12 = lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a <&> _2 .~ b $ x) 
+--     _12 = lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a \<&\> _2 .~ b $ x) 
 --   @
 --
 --   See 'tl' for creating a inline lens expression
@@ -41,7 +41,7 @@ makeTuples' indices = do
 --   Makes a lens like:
 --
 --   @
---     lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a <&> _2 .~ b $ x) 
+--     lens (\x -> (x^._1, x^._2)) (\x (a, b) -> _1 .~ a \<&\> _2 .~ b $ x) 
 --   @
 --   
 --   Here is a more complicated example
@@ -67,7 +67,7 @@ mkGetter ls = do
     let mkGet l = infixE (Just (varE x)) (varE '(^.)) (Just (varE l))
     lamE [return $ VarP x] . tupE . map mkGet $ ls
     
---(\x (a, b) -> _1 .~ a <&> _2 .~ b $ x)         
+--(\x (a, b) -> _1 .~ a \<&\> _2 .~ b $ x)         
 mkSetter :: [Name] -> Q Exp
 mkSetter ls = do
     x <- newName "x"

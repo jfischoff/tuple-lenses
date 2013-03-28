@@ -2,11 +2,10 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                tuple-lenses
-version:             0.1.0.1
+version:             0.1.0.2
 synopsis:            Stock FieldN combos and generators
 description:         
- This package provides some stock lenses for manipulating multiple elements
- of a tuple at once. For instance:
+ This package provides some stock lenses for swizzling tuple elements. For instance:
  .
  >> (1,2,3)^._13
  > (1, 3)
